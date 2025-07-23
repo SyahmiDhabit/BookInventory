@@ -5,7 +5,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-image: url("image/sakura.avif");
-     background-size: cover;                 /* buat gambar fit penuh screen */
+     background-size: cover;                /* buat gambar fit penuh screen */
     background-position: center;            /* fokus tengah gambar */
     background-repeat: no-repeat;           /* jangan ulang gambar */
     min-height: 100vh;                      /* sekurang-kurangnya setinggi skrin */
