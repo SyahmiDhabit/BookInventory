@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url("image/sakura.avif");
+     background-size: cover;                 /* buat gambar fit penuh screen */
+    background-position: center;            /* fokus tengah gambar */
+    background-repeat: no-repeat;           /* jangan ulang gambar */
+    min-height: 100vh;                      /* sekurang-kurangnya setinggi skrin */
+    margin: 0;
+
+
+}
+
+h1{
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    border-radius: 40px;
+    background: linear-gradient(to right, rgb(241, 137, 247), rgb(255, 255, 255));
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+}
+
+.container {
+    background-color: #ffe6ee;
+    padding: 40px 30px;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+
+}
+
+/* Tajuk Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.header h1 {
+    flex: 1;
+    font-size: 28px;
+    color: #222;
+    text-align: center;
+}
+
+/* Ikon dan gambar profil */
+.icon {
+    width: 32px;
+    height: 32px;
+}
+
+.profile-pic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Kandungan utama */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Setiap baris negeri */
+.region {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: center;
+}
+
+/* Kotak negeri (Melaka, N9) */
+.state-box {
+    width: 160px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid #d81b60;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.state-box:hover {
+    transform: scale(1.05);
+}
+
+/* Kad pilihan dropdown */
+.selection-card {
+    background-color: white;
+    border: 2px solid #ad1457;
+    padding: 16px 20px;
+    border-radius: 10px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.selection-card.orange {
+    border-color: #ff7043;
+}
+
+.selection-card label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.selection-card select {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
