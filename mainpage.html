@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Penghantaran Buku Teks</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .school-select.hidden {
+            display: none;
+        }
+
+        .school-select {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,35 +24,71 @@
 
         <div class="content">
             <div class="region">
-                <div class="state-box">Melaka</div>
-                <div class="selection-card">
-                    <label>Zone & School Selection</label>
+                <div class="state-box clickable" onclick="showPanel('melakaPanel')">Melaka</div>
+                <div class="state-box clickable" onclick="showPanel('n9Panel')">Negeri Sembilan</div>
+            </div>
+
+            <div class="selection-card hidden" id="melakaPanel">
+                <label>Select Zone in Melaka</label>
+                <select id="melakaZone" onchange="showSchoolSelect('melakaZone', 'melakaSchool')">
+                    <option value="">-- Pilih Zon --</option>
+                    <option value="Zon A">Zon A</option>
+                    <option value="Zon B">Zon B</option>
+                </select>
+
+                <div class="school-select hidden" id="melakaSchool">
+                    <label>Select School : </label>
                     <select>
-                        <option>Zone: Zon A</option>
-                        <option>Zone: Zon B</option>
-                    </select>
-                    <select>
-                        <option>School: SK Taman Melur</option>
-                        <option>School: SK Taman Mawar</option>
+                        <option>SK Taman Melur</option>
+                        <option>SK Taman Mawar</option>
                     </select>
                 </div>
             </div>
 
-            <div class="region">
-                <div class="state-box">Negeri Sembilan</div>
-                <div class="selection-card orange">
-                    <label>Zone & School Selection</label>
+            <div class="selection-card orange hidden" id="n9Panel">
+                <label>Select Zone in Negeri Sembilan</label>
+                <select id="n9Zone" onchange="showSchoolSelect('n9Zone', 'n9School')">
+                    <option value="">-- Pilih Zon --</option>
+                    <option value="Zon C">Zon C</option>
+                    <option value="Zon D">Zon D</option>
+                </select>
+
+                <div class="school-select hidden" id="n9School">
+                    <label>Select School :</label>
                     <select>
-                        <option>Zone: Zon A</option>
-                        <option>Zone: Zon B</option>
-                    </select>
-                    <select>
-                        <option>School: SK Taman Melur</option>
-                        <option>School: SK Taman Mawar</option>
+                        <option>SK Seremban</option>
+                        <option>SK Rembau</option>
                     </select>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function showPanel(panelId) {
+            const panels = ['melakaPanel', 'n9Panel'];
+            panels.forEach(id => {
+                const panel = document.getElementById(id);
+                if (id === panelId) {
+                    panel.classList.remove('hidden');
+                    panel.classList.add('show');
+                } else {
+                    panel.classList.remove('show');
+                    panel.classList.add('hidden');
+                }
+            });
+        }
+
+        function showSchoolSelect(zoneSelectId, schoolDivId) {
+            const zoneSelect = document.getElementById(zoneSelectId);
+            const schoolDiv = document.getElementById(schoolDivId);
+
+            if (zoneSelect.value !== "") {
+                schoolDiv.classList.remove("hidden");
+            } else {
+                schoolDiv.classList.add("hidden");
+            }
+        }
+    </script>
 </body>
 </html>

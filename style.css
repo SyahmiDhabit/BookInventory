@@ -1,88 +1,59 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url("image/sakura.avif");
-     background-size: cover;                /* buat gambar fit penuh screen */
-    background-position: center;            /* fokus tengah gambar */
-    background-repeat: no-repeat;           /* jangan ulang gambar */
-    min-height: 100vh;                      /* sekurang-kurangnya setinggi skrin */
-    margin: 0;
-
-
-}
-
-h1{
-     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    text-align: center;
-    color: white;
-    border-radius: 40px;
-    background: linear-gradient(to right, rgb(241, 137, 247), rgb(255, 255, 255));
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 90%;
+    background-image: url("image/sakura.avif"); /* folder sama */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .container {
-    background-color: #ffe6ee;
+    background-color: rgba(255, 230, 238, 0.95); /* semi-transparent pink */
     padding: 40px 30px;
     max-width: 1000px;
-    width: 100%;
+    width: 90%;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-
 }
 
-/* Tajuk Header */
+/* Header */
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
-.header h1 {
-    flex: 1;
+h1 {
     font-size: 28px;
-    color: #222;
     text-align: center;
+    padding: 20px;
+    background: linear-gradient(to right, rgb(241, 137, 247), rgb(255, 255, 255));
+    border-radius: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    color: white;
 }
 
-/* Ikon dan gambar profil */
-.icon {
-    width: 32px;
-    height: 32px;
-}
-
-.profile-pic {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Kandungan utama */
+/* Main content */
 .content {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
     align-items: center;
 }
 
-/* Setiap baris negeri */
+/* Region row */
 .region {
     display: flex;
-    align-items: center;
-    gap: 40px;
+    gap: 30px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* Kotak negeri (Melaka, N9) */
+/* State button */
 .state-box {
-    width: 160px;
+    width: 180px;
     height: 100px;
     background-color: white;
     border: 2px solid #d81b60;
@@ -90,27 +61,30 @@ h1{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     color: #222;
     transition: transform 0.3s ease;
+    cursor: pointer;
     text-align: center;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .state-box:hover {
     transform: scale(1.05);
 }
 
-/* Kad pilihan dropdown */
+/* Selection card */
 .selection-card {
     background-color: white;
     border: 2px solid #ad1457;
-    padding: 16px 20px;
+    padding: 20px;
     border-radius: 10px;
-    width: 260px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    transition: all 0.5s ease;
 }
 
 .selection-card.orange {
@@ -127,4 +101,29 @@ h1{
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
+}
+
+/* Panel hide/show effect */
+.hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: scaleY(0.95);
+    transition: all 0.4s ease;
+}
+
+.show {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 10px;
+    transform: scaleY(1);
+}
+
+.school-select.hidden {
+    display: none;
+}
+
+.school-select {
+    display: block;
+    margin-top: 10px;
 }
