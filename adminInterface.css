@@ -1,0 +1,66 @@
+  body {
+            font-family: Arial, sans-serif;
+            background-color: #fbd4e7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .contract-card {
+            display: flex;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contract-image {
+            width: 30%;
+            object-fit: cover;
+        }
+
+        .contract-content {
+            padding: 20px;
+            width: 70%;
+        }
+
+        .contract-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .contract-desc {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .book-types {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .book-types span {
+            background-color: #ffe5e5;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .levels {
+            display: flex;
+            gap: 20px;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }

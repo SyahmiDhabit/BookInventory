@@ -11,6 +11,8 @@ body {
     background-repeat: no-repeat;
 }
 
+
+
 .container {
     background-color: rgba(255, 230, 238, 0.95); /* semi-transparent pink */
     padding: 40px 30px;
@@ -26,13 +28,18 @@ body {
 }
 
 h1 {
-    font-size: 28px;
+    font-size: 45px;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5%;
     padding: 20px;
     background: linear-gradient(to right, rgb(241, 137, 247), rgb(255, 255, 255));
     border-radius: 40px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-    color: white;
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 9px rgb(0, 0, 0);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* Main content */
