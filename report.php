@@ -1,9 +1,28 @@
+
 <?php
-// Ambil data POST dari mainpage
-$negeri = $_POST['negeri'] ?? 'Tidak Dinyatakan';
-$daerah = $_POST['daerah'] ?? 'Tidak Dinyatakan';
-$sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
+include 'connection.php';
+
+$negeri = $_POST['negeri'] ?? '';
+$schoolCode = $_POST['sekolah'] ?? '';
+$schoolName = '';
+
+if ($negeri === 'Melaka') {
+    $query = "SELECT schoolNameM AS name FROM schoolmelaka WHERE schoolCodeM = ?";
+} elseif ($negeri === 'Negeri Sembilan') {
+    $query = "SELECT schoolNameN AS name FROM schooln9 WHERE schoolCodeN = ?";
+}
+
+if (!empty($query)) {
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 's', $schoolCode);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $schoolName);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -14,12 +33,11 @@ $sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
 </head>
 <body>
   <!-- Header with School Info -->
-  <header class="header">
-    <div class="school-info">
-      <h2>Nama Sekolah: <?php echo htmlspecialchars($sekolah); ?></h2>
-      <p>Negeri: <?php echo htmlspecialchars($negeri); ?> (<?php echo htmlspecialchars($daerah); ?>)</p>
-    </div>
-  </header>
+  <header class="header" style="background-color: #000; color: white; padding: 20px; text-align: center;">
+  <h2>Sistem Laporan Buku</h2>
+  <p>Negeri: <?php echo htmlspecialchars($negeri); ?></p>
+<p>Nama Sekolah: <?php echo htmlspecialchars($schoolName); ?></p>
+</header>
 
   <div class="container">
     <!-- Section 1: View Book Order List -->
@@ -61,7 +79,6 @@ $sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
       <form id="orderForm" action="submit_aduan.php" method="POST">
         <input type="hidden" name="sekolah" value="<?php echo htmlspecialchars($sekolah); ?>">
         <input type="hidden" name="negeri" value="<?php echo htmlspecialchars($negeri); ?>">
-        <input type="hidden" name="daerah" value="<?php echo htmlspecialchars($daerah); ?>">
 
         <label for="name">Nama:</label>
         <input type="text" name="name" id="name" required>
@@ -72,9 +89,6 @@ $sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required>
 
-        <label for="comment">Komen:</label>
-        <textarea name="comment" id="comment" rows="3" placeholder="Contoh: Buku tak cukup..."></textarea>
-
         <!-- Section 3: Tambah Aduan Buku -->
         <h3>Tambah Aduan Buku</h3>
         <label for="book-name">Nama Buku:</label>
@@ -82,6 +96,9 @@ $sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
 
         <label for="book-quantity">Kuantiti:</label>
         <input type="number" id="book-quantity" placeholder="Contoh: 10">
+
+        <label for="comment">Komen:</label>
+        <textarea name="comment" id="comment" rows="3" placeholder="Contoh: Buku tak cukup..."></textarea>
 
         <button type="button" id="add-book">Tambah Buku</button>
 

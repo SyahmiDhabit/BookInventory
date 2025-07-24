@@ -18,6 +18,9 @@
       <h1>PEMILIHAN SEKOLAH</h1>
 
       <form action="report.php" method="POST" id="schoolForm">
+        <!-- ✅ FIX: Hanya satu input negeri di luar semua panel -->
+        <input type="hidden" name="negeri" id="negeriInput" value="" />
+
         <div class="state-buttons">
           <button type="button" onclick="showPanel('melakaPanel')">MELAKA</button>
           <button type="button" onclick="showPanel('n9Panel')">NEGERI SEMBILAN</button>
@@ -25,23 +28,8 @@
 
         <!-- Melaka Panel -->
         <div class="zone-panel hidden" id="melakaPanel">
-
-            <label for="melakaZone">Zon:</label>
-            <select id="melakaZone" onchange="showSchoolSelect('melakaZone', 'melakaSchool'); checkAllSelected();">
-                <option value="">-- Pilih Zon Melaka --</option>
-                <option value="melakaTengah">Melaka Tengah</option>
-                <option value="jasin">Jasin</option>
-            </select>
-          <input type="hidden" name="negeri" value="Melaka" />
-          <label for="melakaZone">Daerah:</label>
-          <select name="daerah" id="melakaZone" onchange="loadSchools('Melaka', this.value, 'melakaSchoolSelect')">
-            <option value="">-- Pilih Daerah --</option>
-            <option value="Melaka Tengah">Melaka Tengah</option>
-            <option value="Jasin">Jasin</option>
-          </select>
-
-          <div class="school-select hidden" id="melakaSchool">
-            <label>Sekolah:</label>
+          <div class="school-select" id="melakaSchool">
+            <label id="melakaLabel" class="school-label">Sekolah di Melaka:</label>
             <select name="sekolah" id="melakaSchoolSelect" onchange="checkAllSelected();">
               <option value="">-- Pilih Sekolah --</option>
             </select>
@@ -50,22 +38,8 @@
 
         <!-- Negeri Sembilan Panel -->
         <div class="zone-panel hidden" id="n9Panel">
-
-            <label for="n9Zone">Zon:</label>
-            <select id="n9Zone" onchange="showSchoolSelect('n9Zone', 'n9School'); checkAllSelected();">
-                <option value="">-- Pilih Zon Negeri Sembilan --</option>
-                <option value="seremban">Seremban</option>
-                <option value="rembau">Rembau</option>
-          <input type="hidden" name="negeri" value="Negeri Sembilan" />
-          <label for="n9Zone">Daerah:</label>
-          <select name="daerah" id="n9Zone" onchange="loadSchools('Negeri Sembilan', this.value, 'n9SchoolSelect')">
-            <option value="">-- Pilih Daerah --</option>
-            <option value="Seremban">Seremban</option>
-            <option value="Rembau">Rembau</option>
-          </select>
-
-          <div class="school-select hidden" id="n9School">
-            <label>Sekolah:</label>
+          <div class="school-select" id="n9School">
+            <label id="n9Label" class="school-label">Sekolah di Negeri Sembilan:</label>
             <select name="sekolah" id="n9SchoolSelect" onchange="checkAllSelected();">
               <option value="">-- Pilih Sekolah --</option>
             </select>
@@ -81,34 +55,51 @@
 
 <script>
 function showPanel(panelId) {
-  ['melakaPanel', 'n9Panel'].forEach(id => {
-    document.getElementById(id).classList.toggle('hidden', id !== panelId);
-  });
-  document.getElementById("confirmBtn").classList.add("hidden");
+  document.getElementById('melakaPanel').classList.add('hidden');
+  document.getElementById('n9Panel').classList.add('hidden');
+  document.getElementById('confirmBtn').classList.add('hidden');
+
+  document.getElementById(panelId).classList.remove('hidden');
+
+  if (panelId === 'melakaPanel') {
+    document.getElementById('negeriInput').value = 'Melaka';
+    fetchSchools('Melaka', 'melakaSchoolSelect');
+  } else if (panelId === 'n9Panel') {
+    document.getElementById('negeriInput').value = 'Negeri Sembilan';
+    fetchSchools('Negeri Sembilan', 'n9SchoolSelect');
+  }
 }
 
-function loadSchools(negeri, daerah, selectId) {
+function fetchSchools(negeri, selectId) {
+  const dropdown = document.getElementById(selectId);
+  dropdown.innerHTML = '<option value="">Loading...</option>';
+
   fetch('get_schools.php', {
     method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'negeri=' + encodeURIComponent(negeri) + '&daerah=' + encodeURIComponent(daerah)
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'negeri=' + encodeURIComponent(negeri)
   })
   .then(response => response.json())
   .then(data => {
-    const select = document.getElementById(selectId);
-    select.innerHTML = '<option value="">-- Pilih Sekolah --</option>';
-    data.forEach(name => {
-      select.innerHTML += `<option value="${name}">${name}</option>`;
-    });
-    select.parentElement.classList.remove("hidden");
+    dropdown.innerHTML = '<option value="">-- Pilih Sekolah --</option>';
+    if (data.length > 0) {
+      data.forEach(school => {
+        dropdown.innerHTML += `<option value="${school.code}">${school.name}</option>`;
+      });
+    } else {
+      dropdown.innerHTML = '<option value="">Tiada sekolah dijumpai</option>';
+    }
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+    dropdown.innerHTML = '<option value="">Ralat ambil data sekolah</option>';
   });
 }
 
 function checkAllSelected() {
-  const m = document.getElementById("melakaZone")?.value && document.getElementById("melakaSchoolSelect")?.value;
-  const n = document.getElementById("n9Zone")?.value && document.getElementById("n9SchoolSelect")?.value;
-  document.getElementById("confirmBtn").classList.toggle("hidden", !(m || n));
+  document.getElementById('confirmBtn').classList.remove('hidden');
 }
 </script>
+
 </body>
 </html>
