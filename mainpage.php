@@ -25,14 +25,13 @@
 
         <!-- Melaka Panel -->
         <div class="zone-panel hidden" id="melakaPanel">
-<<<<<<< Updated upstream
+
             <label for="melakaZone">Zon:</label>
             <select id="melakaZone" onchange="showSchoolSelect('melakaZone', 'melakaSchool'); checkAllSelected();">
                 <option value="">-- Pilih Zon Melaka --</option>
                 <option value="melakaTengah">Melaka Tengah</option>
                 <option value="jasin">Jasin</option>
             </select>
-=======
           <input type="hidden" name="negeri" value="Melaka" />
           <label for="melakaZone">Daerah:</label>
           <select name="daerah" id="melakaZone" onchange="loadSchools('Melaka', this.value, 'melakaSchoolSelect')">
@@ -40,7 +39,6 @@
             <option value="Melaka Tengah">Melaka Tengah</option>
             <option value="Jasin">Jasin</option>
           </select>
->>>>>>> Stashed changes
 
           <div class="school-select hidden" id="melakaSchool">
             <label>Sekolah:</label>
@@ -52,13 +50,12 @@
 
         <!-- Negeri Sembilan Panel -->
         <div class="zone-panel hidden" id="n9Panel">
-<<<<<<< Updated upstream
+
             <label for="n9Zone">Zon:</label>
             <select id="n9Zone" onchange="showSchoolSelect('n9Zone', 'n9School'); checkAllSelected();">
                 <option value="">-- Pilih Zon Negeri Sembilan --</option>
                 <option value="seremban">Seremban</option>
                 <option value="rembau">Rembau</option>
-=======
           <input type="hidden" name="negeri" value="Negeri Sembilan" />
           <label for="n9Zone">Daerah:</label>
           <select name="daerah" id="n9Zone" onchange="loadSchools('Negeri Sembilan', this.value, 'n9SchoolSelect')">
@@ -71,7 +68,6 @@
             <label>Sekolah:</label>
             <select name="sekolah" id="n9SchoolSelect" onchange="checkAllSelected();">
               <option value="">-- Pilih Sekolah --</option>
->>>>>>> Stashed changes
             </select>
           </div>
         </div>
