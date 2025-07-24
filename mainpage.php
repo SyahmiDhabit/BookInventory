@@ -26,7 +26,7 @@
         <div class="zone-panel hidden" id="melakaPanel">
             <label for="melakaZone">Zon:</label>
             <select id="melakaZone" onchange="showSchoolSelect('melakaZone', 'melakaSchool'); checkAllSelected();">
-                <option value="">-- Pilih Zon --</option>
+                <option value="">-- Pilih Zon Melaka --</option>
                 <option value="melakaTengah">Melaka Tengah</option>
                 <option value="jasin">Jasin</option>
             </select>
@@ -45,7 +45,7 @@
         <div class="zone-panel hidden" id="n9Panel">
             <label for="n9Zone">Zon:</label>
             <select id="n9Zone" onchange="showSchoolSelect('n9Zone', 'n9School'); checkAllSelected();">
-                <option value="">-- Pilih Zon --</option>
+                <option value="">-- Pilih Zon Negeri Sembilan --</option>
                 <option value="seremban">Seremban</option>
                 <option value="rembau">Rembau</option>
             </select>
