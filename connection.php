@@ -12,8 +12,4 @@ if ($conn->connect_error) {
     die("Sambungan gagal: " . $conn->connect_error);
 }
 
-<<<<<<< Updated upstream
-=======
- echo "Sambungan berjaya";
->>>>>>> Stashed changes
 ?>
