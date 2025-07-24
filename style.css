@@ -2,11 +2,18 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     background-color: #f2f6fa;
+}
+
+
+.page-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: calc(100vh - 80px); /* exclude header */
+    padding: 30px 0;
+    flex-direction: column;
 }
+
 
 .container {
     background-color: white;
@@ -100,3 +107,29 @@ select {
 .hidden {
     display: none;
 }
+
+.top-bar {
+    background-color: #002b5c; /* dark blue like MBMB */
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,1);
+  
+}
+
+.main-header {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* adjust to exclude header height */
+    padding: 30px 0;
+    flex-direction: column;
+}
+

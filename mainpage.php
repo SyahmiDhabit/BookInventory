@@ -6,8 +6,15 @@
     <title>Pemilihan Sekolah</title>
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+   
+<div class="top-bar">
+    <h1 class="main-header">ADUAN BUKU </h1>
+</div>
+    <div class="page-wrapper">
     <div class="container">
+
         <h1>PEMILIHAN SEKOLAH</h1>
 
         <div class="state-buttons">
@@ -52,11 +59,13 @@
                 </select>
             </div>
         </div>
+    </div>
 
         <!-- CONFIRM BUTTON (Hidden initially) -->
         <div class="button-wrapper">
             <button class="confirm-button hidden" id="confirmBtn">Sahkan</button>
         </div>
+    </div>
     </div>
 
     <script>
