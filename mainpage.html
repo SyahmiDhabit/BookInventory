@@ -14,6 +14,23 @@
             display: block;
             margin-top: 10px;
         }
+
+        .confirm-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .confirm-btn:hover {
+            background-color: #ad1457;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -38,9 +55,9 @@
 
                 <div class="school-select hidden" id="melakaSchool">
                     <label>Select School : </label>
-                    <select>
-                        <option>SK Taman Melur</option>
-                        <option>SK Taman Mawar</option>
+                    <select id="melakaSchoolSelect">
+                        <option value="SK Taman Melur">SK Taman Melur</option>
+                        <option value="SK Taman Mawar">SK Taman Mawar</option>
                     </select>
                 </div>
             </div>
@@ -55,13 +72,16 @@
 
                 <div class="school-select hidden" id="n9School">
                     <label>Select School :</label>
-                    <select>
-                        <option>SK Seremban</option>
-                        <option>SK Rembau</option>
+                    <select id="n9SchoolSelect">
+                        <option value="SK Seremban">SK Seremban</option>
+                        <option value="SK Rembau">SK Rembau</option>
                     </select>
-                </div>
-            </div>
+                </div>     
         </div>
+                            <button class="confirm-btn" onclick="confirmSchool('n9Zone', 'n9SchoolSelect')">Sahkan</button>
+
+            </div>
+            
     </div>
 
     <script>
@@ -87,6 +107,17 @@
                 schoolDiv.classList.remove("hidden");
             } else {
                 schoolDiv.classList.add("hidden");
+            }
+        }
+
+        function confirmSchool(zoneId, schoolSelectId) {
+            const zone = document.getElementById(zoneId).value;
+            const school = document.getElementById(schoolSelectId).value;
+
+            if (zone && school) {
+                alert("Zon dipilih: " + zone + "\nSekolah dipilih: " + school);
+            } else {
+                alert("Sila pilih zon dan sekolah dahulu.");
             }
         }
     </script>
