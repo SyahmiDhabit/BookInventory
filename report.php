@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 <?php
 include 'connection.php';
@@ -23,6 +24,14 @@ if (!empty($query)) {
 ?>
 
 
+=======
+<?php
+// Ambil data POST dari mainpage
+$negeri = $_POST['negeri'] ?? 'Tidak Dinyatakan';
+$daerah = $_POST['daerah'] ?? 'Tidak Dinyatakan';
+$sekolah = $_POST['sekolah'] ?? 'Tidak Dinyatakan';
+?>
+>>>>>>> Stashed changes
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -33,11 +42,20 @@ if (!empty($query)) {
 </head>
 <body>
   <!-- Header with School Info -->
+<<<<<<< Updated upstream
   <header class="header" style="background-color: #000; color: white; padding: 20px; text-align: center;">
   <h2>Sistem Laporan Buku</h2>
   <p>Negeri: <?php echo htmlspecialchars($negeri); ?></p>
 <p>Nama Sekolah: <?php echo htmlspecialchars($schoolName); ?></p>
 </header>
+=======
+  <header class="header">
+    <div class="school-info">
+      <h2>Nama Sekolah: <?php echo htmlspecialchars($sekolah); ?></h2>
+      <p>Negeri: <?php echo htmlspecialchars($negeri); ?> (<?php echo htmlspecialchars($daerah); ?>)</p>
+    </div>
+  </header>
+>>>>>>> Stashed changes
 
   <div class="container">
     <!-- Section 1: View Book Order List -->
@@ -79,6 +97,10 @@ if (!empty($query)) {
       <form id="orderForm" action="submit_aduan.php" method="POST">
         <input type="hidden" name="sekolah" value="<?php echo htmlspecialchars($sekolah); ?>">
         <input type="hidden" name="negeri" value="<?php echo htmlspecialchars($negeri); ?>">
+<<<<<<< Updated upstream
+=======
+        <input type="hidden" name="daerah" value="<?php echo htmlspecialchars($daerah); ?>">
+>>>>>>> Stashed changes
 
         <label for="name">Nama:</label>
         <input type="text" name="name" id="name" required>
@@ -89,6 +111,12 @@ if (!empty($query)) {
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required>
 
+<<<<<<< Updated upstream
+=======
+        <label for="comment">Komen:</label>
+        <textarea name="comment" id="comment" rows="3" placeholder="Contoh: Buku tak cukup..."></textarea>
+
+>>>>>>> Stashed changes
         <!-- Section 3: Tambah Aduan Buku -->
         <h3>Tambah Aduan Buku</h3>
         <label for="book-name">Nama Buku:</label>
@@ -97,9 +125,12 @@ if (!empty($query)) {
         <label for="book-quantity">Kuantiti:</label>
         <input type="number" id="book-quantity" placeholder="Contoh: 10">
 
+<<<<<<< Updated upstream
         <label for="comment">Komen:</label>
         <textarea name="comment" id="comment" rows="3" placeholder="Contoh: Buku tak cukup..."></textarea>
 
+=======
+>>>>>>> Stashed changes
         <button type="button" id="add-book">Tambah Buku</button>
 
         <!-- Buku Yang Ditambah -->
