@@ -15,7 +15,7 @@
     }
 
     .top-bar {
-      background-color: #007bff;
+      background-color: #2b5179ff;
       color: white;
       padding: 15px 0;
       text-align: center;
