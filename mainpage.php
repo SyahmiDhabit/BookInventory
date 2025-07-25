@@ -30,7 +30,7 @@
         <div class="zone-panel hidden" id="melakaPanel">
           <div class="school-select" id="melakaSchool">
             <label id="melakaLabel" class="school-label">Sekolah di Melaka:</label>
-            <select name="sekolah" id="melakaSchoolSelect" onchange="checkAllSelected();">
+            <select  id="melakaSchoolSelect" onchange="checkAllSelected();">
               <option value="">-- Pilih Sekolah --</option>
             </select>
           </div>
@@ -40,11 +40,13 @@
         <div class="zone-panel hidden" id="n9Panel">
           <div class="school-select" id="n9School">
             <label id="n9Label" class="school-label">Sekolah di Negeri Sembilan:</label>
-            <select name="sekolah" id="n9SchoolSelect" onchange="checkAllSelected();">
+            <select  id="n9SchoolSelect" onchange="checkAllSelected();">
               <option value="">-- Pilih Sekolah --</option>
             </select>
           </div>
         </div>
+
+        <input type="hidden" name="sekolah" id="schoolCodeInput">
 
         <div class="button-wrapper">
           <button type="submit" class="confirm-button hidden" id="confirmBtn">Sahkan</button>
@@ -97,8 +99,26 @@ function fetchSchools(negeri, selectId) {
 }
 
 function checkAllSelected() {
-  document.getElementById('confirmBtn').classList.remove('hidden');
+  let selectedSchool = '';
+  const negeri = document.getElementById('negeriInput').value;
+
+  if (negeri === 'Melaka') {
+    selectedSchool = document.getElementById('melakaSchoolSelect').value;
+  } else if (negeri === 'Negeri Sembilan') {
+    selectedSchool = document.getElementById('n9SchoolSelect').value;
+  }
+
+  // ✅ Copy selected school code into hidden input
+  document.getElementById('schoolCodeInput').value = selectedSchool;
+
+  // ✅ Show confirm button only if school is selected
+  if (selectedSchool !== '') {
+    document.getElementById('confirmBtn').classList.remove('hidden');
+  } else {
+    document.getElementById('confirmBtn').classList.add('hidden');
+  }
 }
+
 </script>
 
 </body>

@@ -4,6 +4,7 @@ include 'connection.php';
 
 $negeri = $_POST['negeri'] ?? '';
 $schoolCode = $_POST['sekolah'] ?? '';
+$sekolah = $schoolCode; // ✅ Fix for hidden input
 $schoolName = '';
 
 if ($negeri === 'Melaka') {
@@ -20,6 +21,7 @@ if (!empty($query)) {
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 }
+
 ?>
 
 
