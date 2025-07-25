@@ -1,64 +1,109 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senarai Kontrak</title>
-    <link rel="stylesheet" href="adminInterface.css">
-    
+    <title>Admin Interface - Gramixx</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f2f6;
+        }
+
+        .header {
+            width: 100%;
+            padding: 1.5em 0;
+            background-color: #2d3436;
+            color: #ffffff;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2em 1em;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2d3436;
+            font-size: 1.6em;
+            margin-bottom: 1.5em;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1em;
+            justify-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 220px;
+            padding: 1em;
+            background-color: #0984e3;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #74b9ff;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive font adjustments */
+        @media (max-width: 768px) {
+            .header {
+                font-size: 1.6em;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .btn {
+                font-size: 0.95em;
+                padding: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                font-size: 0.9em;
+                padding: 0.8em;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Kad 1 -->
-    <div class="contract-card">
-        <img src="image/ajar.jpg" alt="Buku Teks" class="contract-image">
-        <div class="contract-content">
-            <div class="contract-title">
-                📚 Kontrak 1: Bahan Kurikulum Asas
-            </div>
-            <div class="contract-desc">
-                A comprehensive collection of fundamental learning resources for all levels.
-            </div>
-            <div class="book-types">
-                <span>Buku Aktiviti</span>
-                <span style="background-color: transparent; font-weight: normal;">Buku Teks</span>
-            </div>
-            <div class="levels">
-                <div>Sekolah Rendah</div>
-                <div>Sekolah Menengah</div>
-            </div>
-        </div>
+    <div class="header">
+        Gramixx Book Inventory
     </div>
 
-    <!-- Kad 2 -->
-    <div class="contract-card">
-        <img src="image/buku.jpeg" alt="Tablet DLP" class="contract-image">
-        <div class="contract-content">
-            <div class="contract-title">
-                🌐 Kontrak 2: Program Dwibahasa (DLP)
-            </div>
-            <div class="contract-desc">
-                Enabling bilingual education through specialized materials for primary schools.
-            </div>
-            <div class="levels">
-                <div>Sekolah Rendah</div>
-            </div>
-        </div>
-    </div>
+    <div class="container">
+        <h1>Admin Panel</h1>
 
-    <!-- Kad 3 -->
-    <div class="contract-card">
-        <img src="image/books.jpeg" alt="PPKI" class="contract-image">
-        <div class="contract-content">
-            <div class="contract-title">
-                🧑‍🏫 Kontrak 3: Pendidikan Khas Integrasi (PPKI)
-            </div>
-            <div class="contract-desc">
-                Supportive resources for integrated special education in primary schools.
-            </div>
-            <div class="levels">
-                <div>Sekolah Rendah</div>
-            </div>
+        <div class="button-grid">
+            <a href="" class="btn">📄 List Report </a>
+            <a href="" class="btn">🏫 List School Sort</a>
+            <a href="adminstockbook.php" class="btn">📚 List Book</a>
+            <a href="adminlogin.php" class="btn">🚪 Logout</a>
         </div>
     </div>
 
