@@ -1,111 +1,154 @@
+<?php
+include 'connection.php';
+
+// Fetch all PICs
+$picResult = $conn->query("SELECT * FROM personincharge");
+$pics = [];
+while ($row = $picResult->fetch_assoc()) {
+    $pics[$row['picID']] = $row['picName'];
+}
+
+// Helper: Get books for a state
+function getBooksByState($conn, $state, $pics) {
+    $table = $state === 'melaka' ? 'orderbookmelaka' : 'orderbookn9';
+    $books = [];
+
+$sql = "SELECT ob.*, ab.titleBook, sc." . ($state === 'melaka' ? 'schoolNameM' : 'schoolNameN') . " AS schoolName
+        FROM $table ob
+        LEFT JOIN allbooklist ab ON ob.codeBook = ab.codeBook
+        LEFT JOIN school" . $state . " sc ON ob.schoolCode" . strtoupper($state[0]) . " = sc.schoolCode" . strtoupper($state[0]) . "
+        ORDER BY ob.picID, ob.schoolCode" . strtoupper($state[0]);
+
+    $result = $conn->query($sql);
+
+    while ($row = $result->fetch_assoc()) {
+        $picID = $row['picID'];
+        $schoolCode = $state === 'melaka' ? $row['schoolCodeM'] : $row['schoolCodeN'];
+        $schoolName = $row['schoolName'];
+
+        if (!isset($books[$picID])) $books[$picID] = [];
+        if (!isset($books[$picID][$schoolCode])) {
+            $books[$picID][$schoolCode] = [
+                'schoolName' => $schoolName,
+                'books' => []
+            ];
+        }
+
+        $books[$picID][$schoolCode]['books'][] = $row;
+    }
+
+    return $books;
+}
+
+
+// Fetch books for both states
+$melakaBooks = getBooksByState($conn, 'melaka', $pics);
+$n9Books = getBooksByState($conn, 'n9', $pics);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Interface - Gramixx</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f1f2f6;
-        }
-
-        .header {
-            width: 100%;
-            padding: 1.5em 0;
-            background-color: #2d3436;
-            color: #ffffff;
-            text-align: center;
-            font-size: 2em;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2em 1em;
-            text-align: center;
-        }
-
-        h1 {
-            color: #2d3436;
-            font-size: 1.6em;
-            margin-bottom: 1.5em;
-        }
-
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1em;
-            justify-items: center;
-        }
-
-        .btn {
-            width: 100%;
-            max-width: 220px;
-            padding: 1em;
-            background-color: #0984e3;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.2s;
-        }
-
-        .btn:hover {
-            background-color: #74b9ff;
-            transform: translateY(-2px);
-        }
-
-        /* Responsive font adjustments */
-        @media (max-width: 768px) {
-            .header {
-                font-size: 1.6em;
-            }
-
-            h1 {
-                font-size: 1.3em;
-            }
-
-            .btn {
-                font-size: 0.95em;
-                padding: 0.9em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .btn {
-                font-size: 0.9em;
-                padding: 0.8em;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="admininterface.css" />
 </head>
 <body>
 
-    <div class="header">
-        Gramixx Book Inventory
-    </div>
+<div class="header">Gramixx Book Inventory</div>
 
-    <div class="container">
-        <h1>Admin Panel</h1>
-
-        <div class="button-grid">
-            <a href="" class="btn">📄 List Report </a>
-            <a href="" class="btn">🏫 List School Sort</a>
-            <a href="adminstockbook.php" class="btn">📚 List Book</a>
-            <a href="adminlogin.php" class="btn">🚪 Logout</a>
-        </div>
+<div class="container">
+    <h1>Admin Panel</h1>
+    <div class="button-grid">
+        <a href="#" class="btn">📄 Customer Report</a>
+        <a href="#" class="btn">🏫 List School Sort</a>
+        <a href="adminstockbook.php" class="btn">📚 List Book</a>
+        <a href="adminlogin.php" class="btn">🚪 Logout</a>
     </div>
+</div>
+
+<div class="container">
+    <h2>📍 Negeri Sembilan - PIC Book List</h2>
+    <?php if (!empty($n9Books)) : ?>
+        <?php foreach ($n9Books as $picID => $schools): ?>
+    <div class="pic-section">
+        <h3>👤 <?= $pics[$picID] ?? "Unknown PIC (ID: $picID)" ?></h3>
+        <?php foreach ($schools as $schoolCode => $schoolData): ?>
+            <details>
+                <summary>🏫 <?= $schoolData['schoolName'] ?></summary>
+                <table>
+                    <tr>
+                        <th>Book Code</th>
+                        <th>Title</th>
+                        <th>Real Quantity</th>
+                        <th>Short Quantity</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <?php foreach ($schoolData['books'] as $book): ?>
+                        <tr>
+                            <td><?= $book['codeBook'] ?></td>
+                            <td><?= $book['titleBook'] ?? '-' ?></td>
+                            <td><?= $book['realQtyN'] ?? '-' ?></td>
+<td><?= $book['sortQtyN'] ?? '-' ?></td>
+<td><?= $book['statusN'] ?? '-' ?></td>
+
+                            <td>
+                                <form action="delete_orderbook.php" method="POST" onsubmit="return confirm('Delete this book entry?');">
+                                    <input type="hidden" name="id" value="<?= $book['id'] ?>">
+                                    <button type="submit" class="btn-delete">❌ Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </details>
+        <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
+
+    <?php else: ?>
+        <div class="no-data">No PIC Incharge</div>
+    <?php endif; ?>
+    <a href="newbookpicN9.php?state=n9" class="btn-add">➕ Add Book PIC</a>
+
+    <h2>📍 Melaka - PIC Book List</h2>
+    <?php if (!empty($melakaBooks)) : ?>
+        <?php foreach ($melakaBooks as $picID => $schools): ?>
+    <div class="pic-section">
+        <h3>👤 <?= $pics[$picID] ?? "Unknown PIC (ID: $picID)" ?></h3>
+        <?php foreach ($schools as $schoolCode => $schoolData): ?>
+            <details>
+                <summary>🏫 <?= $schoolData['schoolName'] ?></summary>
+                <table>
+                    <tr>
+                        <th>Book Code</th>
+                        <th>Title</th>
+                        <th>Real Quantity</th>
+                        <th>Short Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                    <?php foreach ($schoolData['books'] as $book): ?>
+                        <tr>
+                            <td><?= $book['codeBook'] ?></td>
+                            <td><?= $book['titleBook'] ?? '-' ?></td>
+                            <td><?= $book['realQtyM'] ?></td>
+                            <td><?= $book['sortQtyM'] ?></td>
+                            <td><?= $book['statusM'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </details>
+        <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
+
+    <?php else: ?>
+        <div class="no-data">No PIC Incharge</div>
+    <?php endif; ?>
+    <a href="newbookpicMelaka.php?state=melaka" class="btn-add">➕ Add Book PIC</a>
+</div>
 
 </body>
 </html>

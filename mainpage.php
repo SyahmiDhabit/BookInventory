@@ -274,6 +274,6 @@ function checkAllSelected() {
     document.getElementById('confirmBtn').classList.add('hidden');
   }
 }
-</script>
+</script>zz
 </body>
 </html>
