@@ -7,15 +7,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $picID = $_POST['picID'];
 
     foreach ($data as $entry) {
-        $codeBook = $entry['code'];
-        $realQtyN = $entry['originalQty'];
-        $sortQtyN = $entry['shortQty'];
-        $statusN = $entry['status'];
+        $codeBook = $entry['code'];          // Book code only
+        $realQtyN = $entry['originalQty'];   // Original quantity
+        $sortQtyN = $entry['shortQty'];      // Shortage quantity
+        $statusN = $entry['status'];         // Delivery status (string like "Delivered" or "Not Delivered")
 
-        // ✅ FIX: Removed 'titleBook' from this line
-        $stmt = $conn->prepare("INSERT INTO orderbookn9 (schoolCodeN, codeBook, realQtyN, sortQtyN, statusN, picID) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssiiis", $schoolCodeN, $codeBook, $realQtyN, $sortQtyN, $statusN, $picID);
+        // Insert into orderbookn9 without titleBook
+        $stmt = $conn->prepare("INSERT INTO orderbookn9 
+            (schoolCodeN, codeBook, realQtyN, sortQtyN, statusN, picID) 
+            VALUES (?, ?, ?, ?, ?, ?)");
+
+        // Types: s = string, i = integer (3 strings, 3 ints)
+        $stmt->bind_param("ssiisi", $schoolCodeN, $codeBook, $realQtyN, $sortQtyN, $statusN, $picID);
         $stmt->execute();
+        $stmt->close();
     }
 
     header("Location: admininterface.php");
