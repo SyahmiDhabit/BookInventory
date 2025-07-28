@@ -21,6 +21,25 @@ if (!empty($query)) {
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 }
+$orderedBooks = [];
+if ($negeri === 'Melaka') {
+    $query = "SELECT ab.titleBook FROM orderbookmelaka ob JOIN allbooklist ab ON ob.codeBook = ab.codeBook WHERE ob.schoolCodeM = ?";
+} elseif ($negeri === 'Negeri Sembilan') {
+    $query = "SELECT ab.titleBook FROM orderbookn9 ob JOIN allbooklist ab ON ob.codeBook = ab.codeBook WHERE ob.schoolCodeN = ?";
+}
+
+if (!empty($query)) {
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $schoolCode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $orderedBooks[] = $row['titleBook'];
+    }
+
+    $stmt->close();
+}
 
 ?>
 
@@ -54,23 +73,51 @@ if (!empty($query)) {
         <table>
           <thead>
             <tr>
+              <th>Kod Buku</th>
               <th>Nama Buku</th>
               <th>Jumlah Ditempah</th>
               <th>Jumlah Diterima</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Matematik Tahun 1</td>
-              <td>50</td>
-              <td>45</td>
-            </tr>
-            <tr>
-              <td>Sains Tahun 2</td>
-              <td>60</td>
-              <td>60</td>
-            </tr>
-          </tbody>
+<?php
+if ($negeri === 'Melaka') {
+    $query = "SELECT ob.codeBook, ab.titleBook, ob.realQtyM, ob.sortQtyM
+              FROM orderbookmelaka ob
+              JOIN allbooklist ab ON ob.codeBook = ab.codeBook
+              WHERE ob.schoolCodeM = ?";
+} elseif ($negeri === 'Negeri Sembilan') {
+    $query = "SELECT ob.codeBook, ab.titleBook, ob.realQtyN, ob.sortQtyN
+              FROM orderbookn9 ob
+              JOIN allbooklist ab ON ob.codeBook = ab.codeBook
+              WHERE ob.schoolCodeN = ?";
+}
+
+if (!empty($query)) {
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $schoolCode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['codeBook']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['titleBook']) . "</td>";
+        echo "<td>" . htmlspecialchars($negeri === 'Melaka' ? $row['realQtyM'] : $row['realQtyN']) . "</td>";
+        echo "<td>" . htmlspecialchars($negeri === 'Melaka' ? $row['sortQtyM'] : $row['sortQtyN']) . "</td>";
+        echo "</tr>";
+    }
+} else {
+    echo '<tr><td colspan="4" style="text-align:center; color: #777;">Tiada rekod tempahan buku</td></tr>';
+}
+
+
+    $stmt->close();
+}
+?>
+</tbody>
+
         </table>
       </div>
     </div>
@@ -94,7 +141,13 @@ if (!empty($query)) {
         <!-- Section 3: Tambah Aduan Buku -->
         <h3>Tambah Aduan Buku</h3>
         <label for="book-name">Nama Buku:</label>
-        <input type="text" id="book-name" placeholder="Contoh: Bahasa Melayu Tahun 3">
+        <select id="book-name">
+  <option value="">-- Pilih Buku --</option>
+  <?php foreach ($orderedBooks as $title): ?>
+    <option value="<?= htmlspecialchars($title) ?>"><?= htmlspecialchars($title) ?></option>
+  <?php endforeach; ?>
+</select>
+
 
         <label for="book-quantity">Kuantiti:</label>
         <input type="number" id="book-quantity" placeholder="Contoh: 10">
@@ -107,17 +160,56 @@ if (!empty($query)) {
         <!-- Buku Yang Ditambah -->
         <div id="book-list">
           <h4>Buku Ditambah</h4>
-          <ul id="book-orders"></ul>
+          <table id="book-orders" border="1" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+  <thead>
+    <tr>
+      <th>Nama Buku</th>
+      <th>Kuantiti</th>
+      <th>Komen</th>
+      <th>Tindakan</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
         </div>
 
         <!-- Data tersembunyi yang akan dihantar -->
-        <input type="hidden" name="book_data" id="book_data">
+      <?php
+// Get order ID for this school
+$orderID = 0;
+if ($negeri === 'Melaka') {
+    $stmt = $conn->prepare("SELECT orderIDM FROM orderbookmelaka WHERE schoolCodeM = ? LIMIT 1");
+    $stmt->bind_param("s", $schoolCode);
+    $stmt->execute();
+    $stmt->bind_result($orderID);
+    $stmt->fetch();
+    $stmt->close();
+} elseif ($negeri === 'Negeri Sembilan') {
+    $stmt = $conn->prepare("SELECT orderIDN FROM orderbookn9 WHERE schoolCodeN = ? LIMIT 1");
+    $stmt->bind_param("s", $schoolCode);
+    $stmt->execute();
+    $stmt->bind_result($orderID);
+    $stmt->fetch();
+    $stmt->close();
+}
 
-        <!-- Butang -->
-        <div class="button-row">
-          <button type="button" class="back" onclick="history.back()">Kembali</button>
-          <button type="submit" class="submit">Hantar Aduan</button>
-        </div>
+// ✅ Display warning if no orderID found
+if ($orderID === 0) {
+    echo "<p style='color:red;'>❌ No Order ID found for this school ($schoolCode) in $negeri.</p>";
+}
+?>
+
+<!-- ✅ NOW place the hidden input AFTER orderID is correctly set -->
+<input type="hidden" name="orderID" value="<?= htmlspecialchars($orderID) ?>">
+<input type="hidden" name="bookData" id="bookData">
+
+<!-- Butang -->
+<div class="button-row">
+  <button type="button" class="back" onclick="history.back()">Kembali</button>
+  <button type="submit" class="submit">Hantar Aduan</button>
+</div>
+
       </form>
     </div>
   </div>
@@ -138,30 +230,71 @@ if (!empty($query)) {
     });
 
     // Tambah Buku
-    const bookOrders = [];
-    const bookList = document.getElementById('book-orders');
-    const bookDataInput = document.getElementById('book_data');
+   const bookOrders = [];
+const bookList = document.querySelector('#book-orders tbody');
+const bookDataInput = document.getElementById('bookData');
 
-    document.getElementById('add-book').addEventListener('click', function () {
-      const bookName = document.getElementById('book-name').value.trim();
-      const bookQty = document.getElementById('book-quantity').value.trim();
+document.getElementById('add-book').addEventListener('click', function () {
+  const bookName = document.getElementById('book-name').value.trim();
+  const bookQty = document.getElementById('book-quantity').value.trim();
+  const comment = document.getElementById('comment').value.trim();
 
-      if (bookName && bookQty) {
-        const bookItem = `${bookName} (${bookQty})`;
-        bookOrders.push({ name: bookName, quantity: bookQty });
+  if (bookName && bookQty && comment) {
+    // Store in array
+    const entry = { name: bookName, quantity: bookQty, comment: comment };
+    bookOrders.push(entry);
 
-        const li = document.createElement('li');
-        li.textContent = bookItem;
-        bookList.appendChild(li);
+    // Create row
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${bookName}</td>
+      <td>${bookQty}</td>
+      <td>${comment}</td>
+      <td><button type="button" class="delete-btn">Padam</button></td>
+    `;
+    bookList.appendChild(row);
 
-        // Reset input
-        document.getElementById('book-name').value = "";
-        document.getElementById('book-quantity').value = "";
+    // Reset input
+        // Remove the selected book from dropdown
+    const dropdown = document.getElementById('book-name');
+    const selectedOption = dropdown.querySelector(`option[value="${bookName}"]`);
+    if (selectedOption) {
+      selectedOption.remove();
+    }
 
-        // Update hidden input with JSON
-        bookDataInput.value = JSON.stringify(bookOrders);
-      }
-    });
+    // Reset input
+    dropdown.value = "";
+
+    document.getElementById('book-quantity').value = "";
+    document.getElementById('comment').value = "";
+
+    // Update hidden field
+    bookDataInput.value = JSON.stringify(bookOrders);
+
+    // Delete handler
+   row.querySelector('.delete-btn').addEventListener('click', function () {
+  const rowIndex = Array.from(bookList.children).indexOf(row);
+  const removed = bookOrders.splice(rowIndex, 1)[0];  // save the removed book
+
+  // Remove the row from table
+  row.remove();
+
+  // Update the hidden input
+  bookDataInput.value = JSON.stringify(bookOrders);
+
+  // Re-add the book to the dropdown
+  const dropdown = document.getElementById('book-name');
+  const newOption = document.createElement('option');
+  newOption.value = removed.name;
+  newOption.textContent = removed.name;
+  dropdown.appendChild(newOption);
+});
+
+  }
+});
+
+
+    
   </script>
 </body>
 </html>
