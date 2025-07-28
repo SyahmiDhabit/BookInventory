@@ -84,6 +84,18 @@
             }
         }
     </style>
+    <div class="header">Gramixx Book Inventory</div>
+
+<div class="container">
+    <h1>Admin Panel</h1>
+    <div class="button-grid">
+        <a href="customerReport.php" class="btn">📄 Customer Report</a>
+        <a href="admininterface.php" class="btn">🏫 List School Sort</a>
+        <a href="adminstockbook.php" class="btn">📚 List Book</a>
+        <a href="adminlogin.php" class="btn">🚪 Logout</a>
+    </div>
+</div>
+
 </head>
 <body>
     <div class="container">
