@@ -50,6 +50,6 @@ $dompdf->setPaper('A4', 'landscape'); // landscape lebih sesuai untuk banyak col
 $dompdf->render();
 
 // Hantar ke browser
-$dompdf->stream("senarai_buku_melaka.pdf", ["Attachment" => false]); // false = view in browser
+$dompdf->stream("Senarai_Buku_Melaka.pdf", ["Attachment" => false]); // false = view in browser
 exit;
 ?>
