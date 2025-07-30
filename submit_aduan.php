@@ -14,8 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $bookData = json_decode($_POST['bookData'], true);
     echo "<pre>";
-print_r($bookData);
 echo "</pre>";
+
+
 
 
     if (empty($bookData)) {
@@ -76,6 +77,24 @@ if ($insert->affected_rows > 0) {
             }
         }
     }
+    $schoolNameM = ''; // Default kosong
+
+if ($state === 'Melaka' && count($bookData) > 0) {
+    $firstOrderID = $bookData[0]['orderID'];
+
+    $stmt = $conn->prepare("
+        SELECT s.schoolNameM 
+        FROM orderbookmelaka o
+        JOIN schoolmelaka s ON o.schoolCodeM = s.schoolCodeM
+        WHERE o.orderIDM = ?
+    ");
+    $stmt->bind_param("i", $firstOrderID);
+    $stmt->execute();
+    $stmt->bind_result($schoolNameM);
+    $stmt->fetch();
+    $stmt->close();
+}
+
 
     if ($success) {
         // === Hantar Emel ===
@@ -86,23 +105,30 @@ if ($insert->affected_rows > 0) {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'piratekucing3@gmail.com';      // Ganti dengan email anda
+            $mail->Username   = 'piratekucing32@gmail.com';      // Ganti dengan email anda
             $mail->Password   = 'cwiemnzsojrrxpfr';          // Ganti dengan App Password Gmail
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;    
 
             // Penerima
-            $mail->setFrom('piratekucing3@gmail.com', 'Sistem Laporan Buku');
+            $mail->setFrom('piratekucing32@gmail.com', 'Sistem Laporan Buku');
 
-            $mail->addAddress('admin@example.com', 'Admin');
+            $mail->addAddress('piratekucing32@gmail.com', 'Admin');
  // Ganti ke emel admin sebenar
 
             // Kandungan
             $mail->isHTML(true);
             $mail->Subject = '📚 Aduan Buku Baru Diterima';
-            $mail->Body    = "Satu aduan buku telah dihantar oleh <strong>$name</strong> dari sekolah <strong>$schoolCode</strong> untuk negeri <strong>$state</strong>.<br><br>Sila semak sistem untuk butiran penuh.";
+           $mail->Body = "
+    Satu aduan buku telah dihantar oleh $name dari $schoolNameM dari negeri Melaka.
+    <br><br>
+    Maklumat lain:<br>
+    Nombor telefon: $phone<br>
+    Emel: $email<br><br>
+    Sila semak sistem untuk butiran penuh<br>
+";
 
-            $mail->SMTPDebug = 2; // Atau 3 untuk lebih detail
+
 $mail->Debugoutput = 'html';
             $mail->send();
             echo "Aduan berjaya dihantar dan emel telah dihantar ke admin.";
@@ -122,7 +148,7 @@ $mail->Debugoutput = 'html';
 <head>
   <meta charset="UTF-8">
   <title>Terima Kasih</title>
-  <!-- <meta http-equiv="refresh" content="3;url=mainpage.php"> Auto redirect -->
+  <meta http-equiv="refresh" content="5;url=mainpage.php"> 
   <style>
     body {
       font-family: Arial, sans-serif;
