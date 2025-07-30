@@ -241,7 +241,15 @@ document.getElementById('add-book').addEventListener('click', function () {
 
   if (bookName && bookQty && comment) {
     // Store in array
-    const entry = { name: bookName, quantity: bookQty, comment: comment };
+const orderID = document.querySelector('input[name="orderID"]').value;
+
+const entry = {
+  name: bookName,
+  qty: bookQty,
+  comment: comment,
+  orderID: orderID
+};
+console.log(entry);
     bookOrders.push(entry);
 
     // Create row
