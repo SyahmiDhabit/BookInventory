@@ -131,8 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
   <!-- Back Button -->
-  <a href="mainpage.php" class="back-button">← Kembali ke Halaman Utama</a>
-
   <div class="login-box">
     <h2>WELCOME TO<br>ADMIN PAGE</h2>
 

@@ -108,11 +108,11 @@ $stmt = $conn->prepare("SELECT picName FROM personincharge WHERE picID = ?");
         <label for="originalQty">Original Quantity</label>
         <input type="number" id="originalQty" min="0">
 
-        <label for="shortQty">Short Quantity</label>
+        <label for="shortQty">Sort Quantity</label>
         <input type="number" id="shortQty" min="0">
 
-        <button type="button" onclick="addRow()">Add</button>
-    </form>
+<div class="actions">
+<button type="button" class="confirm" onclick="addRow()">Add</button>            </div>    </form>
 
     <!-- Temporary Table -->
     <table id="tempTable">
@@ -121,7 +121,7 @@ $stmt = $conn->prepare("SELECT picName FROM personincharge WHERE picID = ?");
                 <th>Code</th>
                 <th>Title</th>
                 <th>Original Qty</th>
-                <th>Short Qty</th>
+                <th>Sort Quantity</th>
                 <th>Delete</th>
             </tr>
         </thead>

@@ -30,7 +30,12 @@ if ($schoolCode) {
 
 // Get book list from bookmelaka
 $books = [];
-$resultBooks = $conn->query("SELECT codeBook, titleBook FROM bookmelaka");
+$resultBooks = $conn->query("
+    SELECT b.codeBook, a.titleBook
+    FROM bookmelaka b
+    JOIN allbooklist a ON b.codeBook = a.codeBook
+    GROUP BY b.codeBook
+");
 // Corrected loop
 while ($row = $resultBooks->fetch_assoc()) {
     $books[] = $row;
@@ -46,11 +51,11 @@ while ($row = $resultBooks->fetch_assoc()) {
 </head>
 <body>
     <div class="container">
-        <h2>Tambah Buku untuk Sekolah - Melaka</h2>
+        <h2>Add Book List - Melaka</h2>
         <p><strong>Negeri:</strong> Melaka</p>
         <p><strong>Sekolah:</strong> <?= htmlspecialchars($schoolName) ?></p>
         <p><strong>PIC:</strong> <?= htmlspecialchars($picName) ?></p>
-        <label for="statusGlobal"><strong>Status Penghantaran:</strong></label>
+        <label for="statusGlobal"><strong>Status</strong></label>
 <select id="statusGlobal" required>
     <option value="">-- Pilih Status --</option>
     <option value="Delivered">Delivered</option>
@@ -61,7 +66,7 @@ while ($row = $resultBooks->fetch_assoc()) {
             <input type="hidden" name="picID" value="<?= $picID ?>">
             <input type="hidden" name="schoolCode" value="<?= $schoolCode ?>">
 
-            <label for="bookCode">Kod Buku</label>
+            <label for="bookCode">Book Code</label>
            <select id="bookCodeSelect" required>
     <option value="">-- Pilih Kod Buku --</option>
     <?php foreach ($books as $book): ?>
@@ -71,7 +76,7 @@ while ($row = $resultBooks->fetch_assoc()) {
     <?php endforeach; ?>
 </select>
 
-            <label for="bookTitle">Tajuk Buku</label>
+            <label for="bookTitle">Book Title</label>
             <select id="bookTitleSelect" required>
     <option value="">-- Pilih Tajuk Buku --</option>
     <?php foreach ($books as $book): ?>
@@ -81,25 +86,24 @@ while ($row = $resultBooks->fetch_assoc()) {
     <?php endforeach; ?>
 </select>
 
-            <label for="realQty">Kuantiti Asal</label>
+            <label for="realQty">Original Quantity</label>
             <input type="number" id="realQty" required>
 
-            <label for="shortQty">Kuantiti Kurang</label>
+            <label for="shortQty">Sort Quantity</label>
             <input type="number" id="shortQty" required>
             
             <div class="actions">
                 <button type="button" class="confirm" onclick="addToTable()">Add</button>
-                <button type="button" class="cancel" onclick="window.location.href='admininterface.php'">Cancel</button>
             </div>
         </form>
 
         <table id="bookTable">
             <thead>
                 <tr>
-                    <th>Kod Buku</th>
-                    <th>Tajuk Buku</th>
-                    <th>Qty Asal</th>
-                    <th>Qty Kurang</th>
+                    <th>Book Code</th>
+                    <th>Book Title</th>
+                    <th>Original Quantity</th>
+                    <th>Sort Quantity</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -107,8 +111,8 @@ while ($row = $resultBooks->fetch_assoc()) {
         </table>
 
         <div class="actions">
+             <button class="cancel" onclick="window.location.href='admininterface.php'">Cancel</button>
             <button class="confirm" onclick="submitData()">Confirm</button>
-            <button class="cancel" onclick="window.location.href='admininterface.php'">Cancel</button>
         </div>
     </div>
 

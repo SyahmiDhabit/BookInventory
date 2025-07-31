@@ -141,7 +141,7 @@ if (isset($_GET['deleteID']) && isset($_GET['state'])) {
 <?php if ($resultN9->num_rows > 0): ?>
     <table>
         <tr>
-            <th>#</th>
+            <th>No.</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>

@@ -146,10 +146,6 @@
         justify-content: center;
       }
 
-      .profile-icon {
-        right: 10px;
-        font-size: 20px;
-      }
 
       .main-header {
         font-size: 20px;
@@ -161,9 +157,6 @@
 <body>
   <div class="top-bar">
     <h1 class="main-header">ADUAN BUKU</h1>
-    <a href="adminlogin.php" class="profile-icon" title="Admin Login">
-      <i class="fas fa-user-circle"></i>
-    </a>
   </div>
 
   <div class="page-wrapper">

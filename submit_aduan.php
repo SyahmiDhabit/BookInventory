@@ -77,8 +77,8 @@ if ($insert->affected_rows > 0) {
             }
         }
     }
-    $schoolNameM = ''; // Default kosong
-
+    // Jika Melaka, dapatkan nama sekolah seperti sedia ada
+$schoolName = '';
 if ($state === 'Melaka' && count($bookData) > 0) {
     $firstOrderID = $bookData[0]['orderID'];
 
@@ -90,10 +90,28 @@ if ($state === 'Melaka' && count($bookData) > 0) {
     ");
     $stmt->bind_param("i", $firstOrderID);
     $stmt->execute();
-    $stmt->bind_result($schoolNameM);
+    $stmt->bind_result($schoolName);
     $stmt->fetch();
     $stmt->close();
 }
+
+// Jika Negeri Sembilan, dapatkan nama sekolah N9
+if ($state === 'Negeri Sembilan' && count($bookData) > 0) {
+    $firstOrderID = $bookData[0]['orderID'];
+
+    $stmt = $conn->prepare("
+        SELECT s.schoolNameN 
+        FROM orderbookn9 o
+        JOIN schooln9 s ON o.schoolCodeN = s.schoolCodeN
+        WHERE o.orderIDN = ?
+    ");
+    $stmt->bind_param("i", $firstOrderID);
+    $stmt->execute();
+    $stmt->bind_result($schoolName);
+    $stmt->fetch();
+    $stmt->close();
+}
+
 
 
     if ($success) {
@@ -120,13 +138,14 @@ if ($state === 'Melaka' && count($bookData) > 0) {
             $mail->isHTML(true);
             $mail->Subject = '📚 Aduan Buku Baru Diterima';
            $mail->Body = "
-    Satu aduan buku telah dihantar oleh $name dari $schoolNameM dari negeri Melaka.
+    Satu aduan buku telah dihantar oleh $name dari $schoolName dari negeri $state.
     <br><br>
     Maklumat lain:<br>
     Nombor telefon: $phone<br>
     Emel: $email<br><br>
     Sila semak sistem untuk butiran penuh<br>
 ";
+
 
 
 $mail->Debugoutput = 'html';
