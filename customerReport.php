@@ -34,7 +34,9 @@ $queryMelaka = "
     JOIN orderbookmelaka o ON r.orderIDM = o.orderIDM
     JOIN schoolmelaka s ON o.schoolCodeM = s.schoolCodeM
     JOIN allbooklist b ON o.codeBook = b.codeBook
+    ORDER BY r.reportIDM DESC
 ";
+
 
 
 $resultMelaka = $conn->query($queryMelaka);
@@ -59,8 +61,9 @@ if (isset($_GET['deleteID']) && isset($_GET['state'])) {
 
     if ($state === 'Melaka') {
         $conn->query("DELETE FROM reportmelaka WHERE reportIDM = $deleteID");
+    } elseif ($state === 'Negeri Sembilan') {
+        $conn->query("DELETE FROM reportn9 WHERE reportIDN = $deleteID");
     }
-    // Tambah if negeri lain di sini jika perlu
 
     header("Location: customerReport.php");
     exit();
@@ -285,9 +288,6 @@ function confirmDelete(reportId, state) {
         window.location.href = "customerReport.php?deleteID=" + reportId + "&state=" + encodeURIComponent(state);
     }
 }
-
-
-
 
 </script>
 

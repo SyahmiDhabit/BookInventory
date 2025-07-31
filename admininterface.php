@@ -95,7 +95,7 @@ $n9Books = getBooksByState($conn, 'n9', $pics);
             <td>
                 <details>
 <summary><?= $schoolData['schoolName'] ?></summary>
-
+                    <div class="table-wrapper">
                     <table>
                         <tr>
                             <th>Book Code</th>
@@ -119,6 +119,7 @@ $n9Books = getBooksByState($conn, 'n9', $pics);
                             </tr>
                         <?php endforeach; ?>
                     </table>
+                    </div>
                 </details>
             </td>
             <?php
@@ -184,6 +185,7 @@ $n9Books = getBooksByState($conn, 'n9', $pics);
                             <td>
                                 <details>
                                     <summary><?= $schoolData['schoolName'] ?></summary>
+                                    <div class="table-wrapper">
 
                                     <table>
                                         <tr>
@@ -208,6 +210,7 @@ $n9Books = getBooksByState($conn, 'n9', $pics);
                                             </tr>
                                         <?php endforeach; ?>
                                     </table>
+                                    </div>
                                 </details>
                             </td>
                             <?php

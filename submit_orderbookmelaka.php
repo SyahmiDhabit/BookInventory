@@ -1,37 +1,34 @@
 <?php
 include 'connection.php';
 
-$data = json_decode(file_get_contents('php://input'), true);
+// Get raw JSON input
+$data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
-if (!isset($data['picID'], $data['schoolCode'], $data['books']) || !is_array($data['books'])) {
+if (!$data || !isset($data['picID'], $data['schoolCode'], $data['status'], $data['books'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Invalid input']);
+    echo json_encode(['success' => false, 'message' => 'Invalid data.']);
     exit;
 }
 
 $picID = $data['picID'];
-$schoolCode = $data['schoolCode'];
+$schoolCodeM = $data['schoolCode'];
+$statusM = $data['status'];
 $books = $data['books'];
 
-// Prepare correct statement
-$stmt = $conn->prepare("INSERT INTO orderbookmelaka (schoolCodeM, codeBook, realQtyM, sortQtyM, statusM, picID) VALUES (?, ?, ?, ?, ?, ?)");
-
 foreach ($books as $book) {
-    $stmt->bind_param(
-        "ssiiis",
-        $schoolCode,
-        $book['code'],
-        $book['realQty'],
-        $book['shortQty'],
-        $book['status'],
-        $picID
-    );
-    $stmt->execute();
-}
+    $codeBook = $book['code'];
+    $realQtyM = (int) $book['realQty'];
+    $sortQtyM = (int) $book['shortQty'];
 
-$stmt->close();
-$conn->close();
+    $stmt = $conn->prepare("
+        INSERT INTO orderbookmelaka 
+        (schoolCodeM, codeBook, realQtyM, sortQtyM, statusM, picID) 
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("ssiisi", $schoolCodeM, $codeBook, $realQtyM, $sortQtyM, $statusM, $picID);
+    $stmt->execute();
+    $stmt->close();
+}
 
 echo json_encode(['success' => true]);
 ?>

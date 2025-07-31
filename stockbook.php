@@ -15,8 +15,9 @@ if ($search !== '') {
 }
 
 if ($negeri === 'Melaka') {
-    $query = "SELECT bil, category, codeBook, titleBook, comment, dateReceive FROM bookmelaka WHERE 1 $searchSql";
-} elseif ($negeri === 'Negeri Sembilan') {
+    $query = "SELECT bil, category, codeBook, titleBook, MelakaTengah AS totalReceive, comment, dateReceive FROM bookmelaka WHERE 1 $searchSql";
+}
+ elseif ($negeri === 'Negeri Sembilan') {
     $query = "SELECT bil, category, codeBook, titleBook, totalReceive, comment, dateReceive FROM bookn9 WHERE 1 $searchSql";
 } else {
     echo "<p style='text-align:center;'>Sila pilih negeri dahulu.</p>";
@@ -211,6 +212,18 @@ if (!$result) {
 </div>
 
 <div class="table-container">
+<?php if ($negeri === 'Negeri Sembilan'): ?>
+    <a href="export_pdf_n9.php" target="_blank">
+        <button>Export to PDF</button>
+    </a>
+<?php elseif ($negeri === 'Melaka'): ?>
+    <a href="export_pdf_melaka.php" target="_blank">
+        <button>Export to PDF</button>
+    </a>
+<?php endif; ?>
+
+
+
     <table>
         <thead>
         <tr>
@@ -218,9 +231,7 @@ if (!$result) {
             <th>Kategori</th>
             <th>Kod Buku</th>
             <th>Tajuk Buku</th>
-            <?php if ($negeri === 'Negeri Sembilan'): ?>
-                <th>Jumlah Diterima</th>
-            <?php endif; ?>
+            <th>Jumlah Diterima</th>
             <th>Komen</th>
             <th>Tarikh Terima</th>
             <th>Tindakan</th>
@@ -244,9 +255,9 @@ if (!$result) {
                 <td><?= $row['codeBook'] ?></td>
                 <td><?= $row['titleBook'] ?></td>
 
-                <?php if ($negeri === 'Negeri Sembilan'): ?>
+              
                     <td><?= $row['totalReceive'] ?></td>
-                <?php endif; ?>
+          
 
                 <td>
                     <div class="comment-wrapper">

@@ -81,6 +81,11 @@ $stmt = $conn->prepare("SELECT picName FROM personincharge WHERE picID = ?");
 
 <p><strong>Sekolah:</strong> <?= htmlspecialchars($schoolName) ?></p>
 <p><strong>PIC:</strong> <?= htmlspecialchars($picName) ?></p>
+<label for="status">Status</label>
+        <select id="status">
+            <option value="Delivered">Delivered</option>
+            <option value="Not Delivered">Not Delivered</option>
+        </select>
 
     <!-- Form -->
     <form id="bookForm">
@@ -106,12 +111,6 @@ $stmt = $conn->prepare("SELECT picName FROM personincharge WHERE picID = ?");
         <label for="shortQty">Short Quantity</label>
         <input type="number" id="shortQty" min="0">
 
-        <label for="status">Status</label>
-        <select id="status">
-            <option value="Delivered">Delivered</option>
-            <option value="Not Delivered">Not Delivered</option>
-        </select>
-
         <button type="button" onclick="addRow()">Add</button>
     </form>
 
@@ -123,7 +122,6 @@ $stmt = $conn->prepare("SELECT picName FROM personincharge WHERE picID = ?");
                 <th>Title</th>
                 <th>Original Qty</th>
                 <th>Short Qty</th>
-                <th>Status</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -162,53 +160,58 @@ function syncCode() {
 
 
     function addRow() {
-        const code = document.getElementById('bookCode').value;
-        const title = document.getElementById('bookTitle').options[document.getElementById('bookTitle').selectedIndex].text;
-        const originalQty = document.getElementById('originalQty').value;
-        const shortQty = document.getElementById('shortQty').value;
-        const status = document.getElementById('status').value;
+    const code = document.getElementById('bookCode').value;
+    const title = document.getElementById('bookTitle').options[document.getElementById('bookTitle').selectedIndex].text;
+    const originalQty = document.getElementById('originalQty').value;
+    const shortQty = document.getElementById('shortQty').value;
 
-        if (!code || !title || originalQty === "" || shortQty === "") {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        const tbody = document.getElementById('tempTable').querySelector('tbody');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${code}</td>
-            <td>${title}</td>
-            <td>${originalQty}</td>
-            <td>${shortQty}</td>
-            <td>${status}</td>
-            <td><span class="delete-btn" onclick="this.closest('tr').remove()">🗑️</span></td>
-        `;
-        tbody.appendChild(row);
+    if (!code || !title || originalQty === "" || shortQty === "") {
+        alert("Please fill in all fields.");
+        return;
     }
+
+    const tbody = document.getElementById('tempTable').querySelector('tbody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${code}</td>
+        <td>${title}</td>
+        <td>${originalQty}</td>
+        <td>${shortQty}</td>
+        <td><span class="delete-btn" onclick="this.closest('tr').remove()">🗑️</span></td>
+    `;
+    tbody.appendChild(row);
+}
+
 
     function saveData() {
-        const rows = document.getElementById('tempTable').querySelectorAll('tbody tr');
-        const data = [];
+    const rows = document.getElementById('tempTable').querySelectorAll('tbody tr');
+    const data = [];
+    const status = document.getElementById('status').value;
 
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            data.push({
-                code: cells[0].innerText,
-                title: cells[1].innerText,
-                originalQty: cells[2].innerText,
-                shortQty: cells[3].innerText,
-                status: cells[4].innerText
-            });
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        data.push({
+            code: cells[0].innerText,
+            title: cells[1].innerText,
+            originalQty: cells[2].innerText,
+            shortQty: cells[3].innerText
         });
+    });
 
-        if (data.length === 0) {
-            alert("No data to submit.");
-            return false;
-        }
-
-        document.getElementById('dataInput').value = JSON.stringify(data);
-        return true;
+    if (data.length === 0) {
+        alert("No data to submit.");
+        return false;
     }
+
+    const fullData = {
+        status: status,
+        items: data
+    };
+
+    document.getElementById('dataInput').value = JSON.stringify(fullData);
+    return true;
+}
+
 </script>
 </body>
 </html>

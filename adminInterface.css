@@ -33,16 +33,10 @@
     margin-bottom: 40px;
     background-color: #f9f9ff;
     box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    overflow-x: auto; /* ✨ penting: supaya jadual scroll kalau overflow */
 }
 
-.pic-section {
-    border: 2px solid #0099cc;
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-}
+
 
 .details > summary {
     font-weight: bold;
@@ -83,26 +77,44 @@
         background-color: #00509e; /* Slightly lighter blue */
         transform: translateY(-2px);
     }
+.pic-section {
+    border: 2px solid #0099cc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    overflow-x: auto; /* ✨ ikut jadual panjang */
+}
 
-    .pic-section {
-        background: white;
-        border-radius: 10px;
-        margin: 30px auto;
-        padding: 20px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
+
+
 
     table {
-        width: 100%;
-        margin-top: 10px;
-        border-collapse: collapse;
-    }
+    width: 100%;
+    max-width: 100%; /* ✨ jadual tidak lebih dari bekas */
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: auto;
+}
+
 
     th, td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
     }
+    .table-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+    .table-wrapper table th {
+    position: sticky;
+    top: 0;
+    background: white;
+}
 
     th {
         background: #003366; /* Table header deep blue */
@@ -129,4 +141,21 @@
         font-style: italic;
         color: gray;
     }
+
+    @media (max-width: 600px) {
+    .btn {
+        font-size: 0.9em;
+        padding: 0.8em;
+    }
+
+    .header {
+        font-size: 1.5em;
+    }
+
+    th, td {
+        font-size: 0.85em;
+        padding: 6px;
+    }
+}
+
     

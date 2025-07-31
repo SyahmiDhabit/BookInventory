@@ -50,39 +50,43 @@ while ($row = $resultBooks->fetch_assoc()) {
         <p><strong>Negeri:</strong> Melaka</p>
         <p><strong>Sekolah:</strong> <?= htmlspecialchars($schoolName) ?></p>
         <p><strong>PIC:</strong> <?= htmlspecialchars($picName) ?></p>
+        <label for="statusGlobal"><strong>Status Penghantaran:</strong></label>
+<select id="statusGlobal" required>
+    <option value="">-- Pilih Status --</option>
+    <option value="Delivered">Delivered</option>
+    <option value="Not Delivered">Not Delivered</option>
+</select>
 
         <form id="bookForm">
             <input type="hidden" name="picID" value="<?= $picID ?>">
             <input type="hidden" name="schoolCode" value="<?= $schoolCode ?>">
 
             <label for="bookCode">Kod Buku</label>
-            <select id="bookCode" required>
-                <option value="">-- Pilih Kod Buku --</option>
-                <?php foreach ($books as $book): ?>
-    <option value="<?= $book['codeBook'] ?>" data-title="<?= htmlspecialchars($book['titleBook']) ?>">
-        <?= $book['codeBook'] ?>
-    </option>
-<?php endforeach; ?>
-
-
-            </select>
+           <select id="bookCodeSelect" required>
+    <option value="">-- Pilih Kod Buku --</option>
+    <?php foreach ($books as $book): ?>
+        <option value="<?= $book['codeBook'] ?>" data-title="<?= htmlspecialchars($book['titleBook']) ?>">
+            <?= $book['codeBook'] ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
             <label for="bookTitle">Tajuk Buku</label>
-            <input type="text" id="bookTitle" readonly>
+            <select id="bookTitleSelect" required>
+    <option value="">-- Pilih Tajuk Buku --</option>
+    <?php foreach ($books as $book): ?>
+        <option value="<?= $book['codeBook'] ?>" data-code="<?= $book['codeBook'] ?>">
+            <?= $book['titleBook'] ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
             <label for="realQty">Kuantiti Asal</label>
             <input type="number" id="realQty" required>
 
             <label for="shortQty">Kuantiti Kurang</label>
             <input type="number" id="shortQty" required>
-
-            <label for="status">Status</label>
-            <select id="status" required>
-                <option value="">-- Pilih Status --</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Not Delivered">Not Delivered</option>
-            </select>
-
+            
             <div class="actions">
                 <button type="button" class="confirm" onclick="addToTable()">Add</button>
                 <button type="button" class="cancel" onclick="window.location.href='admininterface.php'">Cancel</button>
@@ -96,7 +100,6 @@ while ($row = $resultBooks->fetch_assoc()) {
                     <th>Tajuk Buku</th>
                     <th>Qty Asal</th>
                     <th>Qty Kurang</th>
-                    <th>Status</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -109,78 +112,101 @@ while ($row = $resultBooks->fetch_assoc()) {
         </div>
     </div>
 
-    <script>
-        const bookCodeSelect = document.getElementById('bookCode');
-        const bookTitleInput = document.getElementById('bookTitle');
-        const tableBody = document.querySelector('#bookTable tbody');
-        const bookData = [];
+   <script>
+    const codeSelect = document.getElementById('bookCodeSelect');
+    const titleSelect = document.getElementById('bookTitleSelect');
+    const tableBody = document.querySelector('#bookTable tbody');
+    const bookData = [];
 
-        bookCodeSelect.addEventListener('change', function () {
-            const selectedOption = this.options[this.selectedIndex];
-            const title = selectedOption.getAttribute('data-title');
-            bookTitleInput.value = title || '';
-        });
-
-        function addToTable() {
-            const code = bookCodeSelect.value;
-            const title = bookTitleInput.value;
-            const realQty = document.getElementById('realQty').value;
-            const shortQty = document.getElementById('shortQty').value;
-            const status = document.getElementById('status').value;
-
-            if (!code || !realQty || !shortQty || !status) {
-                alert("Please fill in all fields");
-                return;
+    // Sync tajuk bila tukar kod
+    codeSelect.addEventListener('change', function () {
+        const selectedCode = this.value;
+        for (let option of titleSelect.options) {
+            if (option.value === selectedCode) {
+                titleSelect.value = selectedCode;
+                break;
             }
+        }
+    });
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${code}</td>
-                <td>${title}</td>
-                <td>${realQty}</td>
-                <td>${shortQty}</td>
-                <td>${status}</td>
-                <td class="delete-btn" onclick="deleteRow(this)">❌</td>
-            `;
-            tableBody.appendChild(row);
+    // Sync kod bila tukar tajuk
+    titleSelect.addEventListener('change', function () {
+        const selectedCode = this.value;
+        for (let option of codeSelect.options) {
+            if (option.value === selectedCode) {
+                codeSelect.value = selectedCode;
+                break;
+            }
+        }
+    });
 
-            bookData.push({ code, title, realQty, shortQty, status });
+    function addToTable() {
+        const code = codeSelect.value;
+        const title = titleSelect.options[titleSelect.selectedIndex]?.text || '';
+        const realQty = document.getElementById('realQty').value;
+        const shortQty = document.getElementById('shortQty').value;
 
-            bookCodeSelect.value = '';
-            bookTitleInput.value = '';
-            document.getElementById('realQty').value = '';
-            document.getElementById('shortQty').value = '';
-            document.getElementById('status').value = '';
+        if (!code || !realQty || !shortQty) {
+            alert("Sila isi semua medan");
+            return;
         }
 
-        function deleteRow(btn) {
-            const row = btn.closest('tr');
-            const index = Array.from(row.parentNode.children).indexOf(row);
-            row.remove();
-            bookData.splice(index, 1);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${code}</td>
+            <td>${title}</td>
+            <td>${realQty}</td>
+            <td>${shortQty}</td>
+            <td class="delete-btn" onclick="deleteRow(this)">❌</td>
+        `;
+        tableBody.appendChild(row);
+
+        bookData.push({ code, title, realQty, shortQty });
+
+        // Reset form
+        codeSelect.value = '';
+        titleSelect.value = '';
+        document.getElementById('realQty').value = '';
+        document.getElementById('shortQty').value = '';
+    }
+
+    function deleteRow(btn) {
+        const row = btn.closest('tr');
+        const index = Array.from(row.parentNode.children).indexOf(row);
+        row.remove();
+        bookData.splice(index, 1);
+    }
+
+    function submitData() {
+        const statusGlobal = document.getElementById('statusGlobal').value;
+
+        if (!statusGlobal) {
+            alert("Sila pilih status penghantaran");
+            return;
         }
 
-        function submitData() {
-            const formData = {
-                picID: document.querySelector('input[name="picID"]').value,
-                schoolCode: document.querySelector('input[name="schoolCode"]').value,
-                books: bookData
-            };
+        const formData = {
+            picID: document.querySelector('input[name="picID"]').value,
+            schoolCode: document.querySelector('input[name="schoolCode"]').value,
+            status: statusGlobal,
+            books: bookData
+        };
 
-            fetch('submit_orderbookmelaka.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Order submitted successfully!");
-                    window.location.href = 'admininterface.php';
-                } else {
-                    alert("Submission failed");
-                }
-            });
-        }
-    </script>
+        fetch('submit_orderbookmelaka.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Order submitted successfully!");
+                window.location.href = 'admininterface.php';
+            } else {
+                alert("Submission failed");
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
