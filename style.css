@@ -1,135 +1,287 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
     margin: 0;
-    background-color: #f2f6fa;
-}
-
-
-.page-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 80px); /* exclude header */
-    padding: 30px 0;
-    flex-direction: column;
-}
-
-
-.container {
-    background-color: white;
-    padding: 40px;
-    border: 3px solid #002b5c; /* thicker blue border */
-    border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.6);
-    width: 420px;
-    text-align: center;
-}
-
-h1 {
-    color: #002b5c;
-    margin-bottom: 20px;
-}
-
-.state-buttons {
-    display: flex;
-    justify-content: space-between; /* spread out evenly */
-    margin-bottom: 20px;
-    gap: 20px; /* spacing between buttons */
-}
-
-.state-buttons button {
-    flex: 1; /* Make buttons take equal width */
-    padding: 12px 0; /* vertical padding only */
-    background-color: #004080;
-    color: white;
-    border: 1px solid #003366;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: background-color 0.3s ease;
-    min-width: 0; /* prevent button overflow */
-}
-
-.state-buttons button:hover {
-    background-color: #002c5c;
-}
-
-.zone-panel {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.zone-panel label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
-}
-
-select {
-    width: 100%;
-    padding: 8px 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-.school-select {
-    margin-top: 10px;
+h1{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    background-color: #0a1930;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.button-wrapper {
-    margin-top: 30px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 45px;
+}
+
+.logo h1 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #00a8ff;
+}
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.5)), 
+                url('images/mainPicDewan.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     text-align: center;
+    padding: 0 20px;
 }
 
-.confirm-button {
+.hero-text h2 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto 25px auto;
+    line-height: 1.6;
+}
+
+.btn-primary {
+    background-color: #00a8ff;
     padding: 12px 30px;
-    background-color: #006400;
-    color: white;
-    border: none;
     border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: background-color 0.3s ease;
-    min-width: 160px; /* fixed width for confirm button */
-}
-
-.confirm-button:hover {
-    background-color: #004d00;
-}
-
-.hidden {
-    display: none;
-}
-
-.top-bar {
-    background-color: #002b5c; /* dark blue like MBMB */
-    padding: 20px 0;
-    text-align: center;
-    width: 100%;
-    box-shadow: 0 2px 6px rgba(0,0,0,1);
-  
-}
-
-.main-header {
     color: white;
-    font-size: 28px;
-    font-weight: bold;
-    margin: 0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s;
 }
 
-.page-wrapper {
+.btn-primary:hover {
+    background-color: #007bbf;
+}
+
+/* Info Section */
+.info {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 80px); /* adjust to exclude header height */
-    padding: 30px 0;
-    flex-direction: column;
+    align-items: stretch;
+    gap: 25px;
+    padding: 60px;
+    background-color: #f4f6fa;
 }
 
+.info-card {
+    flex: 1;
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.info-card:hover {
+    transform: translateY(-8px);
+}
+
+.info-card h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: #0a1930;
+}
+
+.info-card p {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background-color: #0a1930;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* ===== AUTH PAGE (LOGIN & REGISTER) - MODERN GLASS DESIGN ===== */
+.auth-section {
+  background: linear-gradient(to right, rgba(17, 17, 17, 0.5), rgba(24, 25, 26, 0.5)), 
+              url('images/mainPicDewan.jpg') center/cover no-repeat;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.auth-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  padding: 50px 60px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.45);
+}
+
+.auth-container h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.auth-container p {
+  color: #d8e1f0;
+  font-size: 15px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+  padding: 20px;
+}
+
+.auth-form label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #f4f8ff;
+}
+
+.auth-form input,
+.auth-form select {
+  padding: 15px 38px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #0a1930;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  box-shadow: 0 0 8px rgba(0,168,255,0.8);
+  background-color: white;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #00a8ff, #0070cc);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+
+.auth-form button:hover {
+  background: linear-gradient(90deg, #0070cc, #005a9c);
+  transform: scale(1.02);
+}
+
+.auth-footer {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #f4f8ff;
+}
+
+.auth-footer a {
+  color: #00a8ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.btn-back-home {
+  display: inline-block;
+  margin-top: 18px;
+  color: #00a8ff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-back-home:hover {
+  text-decoration: underline;
+}
+
+/* ===== PASSWORD TOGGLE STYLE ===== */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 45px; /* space for icon */
+}
+
+.password-container i {
+  position: absolute;
+  right: 12px;
+  color: #0070cc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.password-container i:hover {
+  color: #00a8ff;
+}
